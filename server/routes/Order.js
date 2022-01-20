@@ -1,5 +1,5 @@
-const router = require("express");
-const orderRouter = router.Router();
+const express = require("express");
+const orderRouter = express.Router();
 
 const {
   createOrder,
