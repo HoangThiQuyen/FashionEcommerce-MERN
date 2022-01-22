@@ -27,8 +27,8 @@ const updateProduct = async (req, res) => {
 };
 
 const getListProduct = async (req, res) => {
-  const pNew = req.query.new;
-  const pCategories = req.query.categories;
+  const pNew = req.query?.new || null;
+  const pCategories = req.query?.categories || null;
   try {
     let listProduct;
     if (pNew) {

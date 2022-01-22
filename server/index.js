@@ -15,9 +15,6 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api", rootRouter);
-app.use("/demo", (req, res) => {
-  res.status(200).send("Hello");
-});
 
 app.listen(process.env.PORT, () => {
   console.log("http://localhost:3000");
