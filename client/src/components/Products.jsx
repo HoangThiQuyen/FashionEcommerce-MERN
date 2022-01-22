@@ -1,9 +1,6 @@
-import axios from "axios";
+import { publicRequest } from "../RequestMethod";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-// *** data ***
-import { popularProducts } from "../data";
 
 // *** Component ***
 import Product from "./Product";
@@ -22,17 +19,49 @@ const Products = ({ category, filter, sort }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get(
-          "https://fashion-ecommerce-server.vercel.app/api/products"
+        const res = await publicRequest.get(
+          category ? `/product?categories=${category}` : `/product`
         );
+        setProducts(res.data);
       } catch (err) {}
     };
+    getProducts();
   }, [category]);
+  useEffect(() => {
+    category &&
+      setFilterProducts(
+        products.filter((ele) =>
+          // a: "data" => "a:data"
+          Object.entries(filter).every(([key, value]) =>
+            ele[key].includes(value)
+          )
+        )
+      );
+  }, [category, filter, products]);
+
+  useEffect(() => {
+    if (sort === "newest") {
+      setFilterProducts((products) =>
+        [...products].sort((a, b) => a.createdAt - b.createdAt)
+      );
+    } else if (sort === "asc") {
+      setFilterProducts((products) =>
+        [...products].sort((a, b) => a.price - b.price)
+      );
+    } else {
+      setFilterProducts((products) =>
+        [...products].sort((a, b) => b.price - a.price)
+      );
+    }
+  }, [sort]);
+
   return (
     <Container>
-      {popularProducts?.map((ele) => (
-        <Product item={ele} key={ele.id} />
-      ))}
+      {category
+        ? filterProducts?.map((ele) => <Product item={ele} key={ele._id} />)
+        : products
+            ?.slice(0, 8)
+            .map((ele) => <Product item={ele} key={ele._id} />)}
     </Container>
   );
 };

@@ -9,6 +9,8 @@ import { styled as styledMui } from "@mui/material/styles";
 
 // *** Icon MUI
 import { Search, ShoppingCart } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 // *** styled-components ***
 const Container = styled.div`
@@ -87,6 +89,7 @@ const StyledBadge = styledMui(Badge)(({ theme }) => ({
 }));
 
 const Navbar = () => {
+  const quantity = useSelector((state) => state.cart.quantity);
   return (
     <Container>
       <Wrapper>
@@ -103,13 +106,15 @@ const Navbar = () => {
         <Right>
           <MenuItem>REGISTER</MenuItem>
           <MenuItem>SIGN IN</MenuItem>
-          <MenuItem>
-            <IconButton aria-label="cart">
-              <StyledBadge badgeContent={4} color="secondary">
-                <ShoppingCart />
-              </StyledBadge>
-            </IconButton>
-          </MenuItem>
+          <Link to="/cart">
+            <MenuItem>
+              <IconButton aria-label="cart">
+                <StyledBadge badgeContent={quantity} color="secondary">
+                  <ShoppingCart />
+                </StyledBadge>
+              </IconButton>
+            </MenuItem>
+          </Link>
         </Right>
       </Wrapper>
     </Container>
