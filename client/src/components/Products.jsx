@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 // *** data ***
@@ -15,7 +17,17 @@ const Container = styled.div`
 `;
 
 const Products = ({ category, filter, sort }) => {
-  console.log(category, filter, sort);
+  const [products, setProducts] = useState([]);
+  const [filterProducts, setFilterProducts] = useState([]);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(
+          "https://fashion-ecommerce-server.vercel.app/api/products"
+        );
+      } catch (err) {}
+    };
+  }, [category]);
   return (
     <Container>
       {popularProducts?.map((ele) => (
